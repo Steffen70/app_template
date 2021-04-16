@@ -6,21 +6,22 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
-using API.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
 using API.Helpers;
 using API.DTOs;
+using API.Data;
+using System.Linq;
 
 namespace API.Services
 {
     public class SeedService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
         private readonly IOptions<ApiSettings> _apiSettings;
-        public SeedService(IUnitOfWork unitOfWork, IWebHostEnvironment env, IOptions<ApiSettings> apiSettings)
+        public SeedService(UnitOfWork unitOfWork, IWebHostEnvironment env, IOptions<ApiSettings> apiSettings)
         {
             _apiSettings = apiSettings;
             _env = env;
@@ -32,7 +33,10 @@ namespace API.Services
             if (await CreateDatabaseAsync())
             {
                 if (_env.IsDevelopment())
+                {
                     await SeedUsersAsync();
+                    SeedWeather();
+                }
 
 
                 if (await _unitOfWork.Complete())
@@ -83,6 +87,19 @@ namespace API.Services
                     PasswordSalt = hmac.Key
                 });
             }
+        }
+
+        private readonly string[] Summaries = new[]
+        {
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
+
+        private void SeedWeather()
+        {
+            Summaries
+                .Select(s => new Weather { Summary = s })
+                .ToList()
+                .ForEach(w => _unitOfWork.WeatherRepository.Add(w));
         }
     }
 }

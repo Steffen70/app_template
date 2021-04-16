@@ -1,0 +1,14 @@
+using API.DTOs;
+using API.Entities;
+using AutoMapper;
+
+namespace API.Helpers
+{
+    public partial class AutoMapperProfiles : Profile
+    {
+        private void AddGeneratedMaps()
+        {
+            CreateMap<%Entity%, %Dto%>();
+        }
+    }
+}

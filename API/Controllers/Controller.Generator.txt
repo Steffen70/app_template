@@ -1,0 +1,32 @@
+﻿using System.Threading.Tasks;
+using API.Data;
+using API.DTOs;
+using API.Extensions;
+using API.Helpers.Pagination;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Controllers
+{
+    public partial class %Table%Controller : BaseApiController
+    {
+        private readonly UnitOfWork _unitOfWork;
+        public %Table%Controller(UnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<PagedList<%Dto%>>> Get([FromQuery] PaginationParams paginationParams)
+        {
+            var list = await _unitOfWork.%Entity%Repository.ListAllAsync(paginationParams);
+
+            Response.AddPaginationHeader(list);
+
+            return list;
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<%Dto%>> GetById([FromRoute] int id)
+        => await _unitOfWork.%Entity%Repository.GetByIdAsync(id);
+    }
+}

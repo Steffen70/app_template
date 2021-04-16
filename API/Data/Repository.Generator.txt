@@ -1,0 +1,11 @@
+using API.DTOs;
+using API.Entities;
+using AutoMapper;
+
+namespace API.Data
+{
+    public partial class %Entity%Repository : GenericRepository<%Entity%, %Dto%>
+    {
+        public %Entity%Repository(DataContext context, UnitOfWork unitOfWork, IMapper mapper) : base(context, unitOfWork, mapper) { }
+    }
+}

@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
@@ -16,8 +17,8 @@ namespace API.Controllers
     {
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public AccountController(IUnitOfWork unitOfWork, ITokenService tokenService, IMapper mapper)
+        private readonly UnitOfWork _unitOfWork;
+        public AccountController(UnitOfWork unitOfWork, ITokenService tokenService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

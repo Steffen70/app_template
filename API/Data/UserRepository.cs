@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace API.Data
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;

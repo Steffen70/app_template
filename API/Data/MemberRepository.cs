@@ -8,12 +8,12 @@ using AutoMapper.QueryableExtensions;
 
 namespace API.Data
 {
-    public class MemberRepository : IMemberRepository
+    public class MemberRepository
     {
         private readonly DataContext _context;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public MemberRepository(DataContext context, IUnitOfWork unitOfWork, IMapper mapper)
+        public MemberRepository(DataContext context, UnitOfWork unitOfWork, IMapper mapper)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;

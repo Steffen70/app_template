@@ -1,20 +1,17 @@
 using System.Threading.Tasks;
+using API.Data;
 using API.DTOs;
 using API.Extensions;
 using API.Helpers.Pagination;
-using API.Interfaces;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     public class MembersController : BaseApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        public MembersController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly UnitOfWork _unitOfWork;
+        public MembersController(UnitOfWork unitOfWork)
         {
-            _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
 

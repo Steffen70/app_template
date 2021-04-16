@@ -5,10 +5,12 @@ using AutoMapper;
 
 namespace API.Helpers
 {
-    public class AutoMapperProfiles : Profile
+    public partial class AutoMapperProfiles : Profile
     {
         public AutoMapperProfiles()
         {
+            AddGeneratedMaps();
+
             CreateMap<RegisterDto, AppUser>();
 
             CreateMap<AppUser, UserDto>();
