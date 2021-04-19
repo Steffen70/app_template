@@ -1,11 +1,10 @@
-namespace API.Helpers.Pagination
+namespace API.Helpers.Filtration
 {
-    public class PaginationParams : IPagination
+    public class FiltrationParams : IPagination
     {
         private const int MaxPageSize = 50;
         private int _pageSize = 10;
 
-        //PaginationParams
         public int CurrentPage { get; set; } = 1;
         public int PageSize
         {

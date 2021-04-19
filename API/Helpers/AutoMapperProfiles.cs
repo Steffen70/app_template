@@ -1,8 +1,8 @@
 using System;
 using API.DTOs;
 using API.Entities;
-using API.Helpers.Pagination;
-using API.Helpers.Pagination.Custom;
+using API.Helpers.Filtration;
+using API.Helpers.Filtration.Custom;
 using AutoMapper;
 
 namespace API.Helpers
@@ -17,8 +17,8 @@ namespace API.Helpers
             CreateMap<AppUser, UserAdminDto>();
             CreateMap<AppUser, MemberDto>();
 
-            CreateMap<PaginationParams, PaginationHeader>();
-            
+            CreateMap<FiltrationParams, FiltrationHeader>();
+
             CreateMap<TestParams, TestHeader>();
         }
     }

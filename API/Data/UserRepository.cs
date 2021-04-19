@@ -2,10 +2,10 @@ using System.Threading.Tasks;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using API.Helpers.Pagination;
 using API.DTOs;
 using AutoMapper.QueryableExtensions;
 using System.Linq;
+using API.Helpers.Filtration;
 
 namespace API.Data
 {
@@ -50,13 +50,13 @@ namespace API.Data
                 .SingleOrDefaultAsync(x => x.Username == username.ToLower());
         }
 
-        public async Task<PagedList<UserAdminDto, PaginationHeader>> GetUsersAsync(PaginationParams paginationParams)
+        public async Task<FilteredList<UserAdminDto>> GetUsersAsync(FiltrationParams filtrationParams)
         {
             var userAdminDtos = _context.Users
                 .OrderBy(u => u.LastActive)
                 .ProjectTo<UserAdminDto>(_mapper.ConfigurationProvider);
 
-            return await PagedList<UserAdminDto, PaginationHeader>.CreateAsync(userAdminDtos, paginationParams, _mapper);
+            return await FilteredList<UserAdminDto>.CreateAsync(userAdminDtos, filtrationParams, _mapper);
         }
 
         public async Task<bool> AnyUsersAsync()

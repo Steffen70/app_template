@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Extensions;
-using API.Helpers.Pagination;
+using API.Helpers.Filtration;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,13 +22,13 @@ namespace API.Controllers
 
         [Authorize(Policy = "RequireAdminRole")]
         [HttpGet("users-with-role")]
-        public async Task<ActionResult<PagedList<UserAdminDto, PaginationHeader>>> GetUsers([FromQuery] PaginationParams paginationParams)
+        public async Task<ActionResult<IEnumerable<UserAdminDto>>> GetUsers([FromQuery] FiltrationParams filtrationParams)
         {
-            var users = await _unitOfWork.UserRepository.GetUsersAsync(paginationParams);
+            var users = await _unitOfWork.UserRepository.GetUsersAsync(filtrationParams);
 
-            Response.AddPaginationHeader(users);   
+            Response.AddFiltrationHeader(users);   
 
-            return users;
+            return users.Result;
         }
 
         [Authorize(Policy = "RequireAdminRole")]

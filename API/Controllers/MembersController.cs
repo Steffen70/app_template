@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Extensions;
-using API.Helpers.Pagination;
-using API.Helpers.Pagination.Custom;
+using API.Helpers.Filtration;
+using API.Helpers.Filtration.Custom;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,23 +21,23 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedList<MemberDto, PaginationHeader>>> GetMembers([FromQuery] PaginationParams paginationParams)
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetMembers([FromQuery] FiltrationParams filtrationParams)
         {
-            var membersList = await _unitOfWork.MemberRepository.GetMembersAsync(paginationParams);
+            var membersList = await _unitOfWork.MemberRepository.GetMembersAsync(filtrationParams);
 
-            Response.AddPaginationHeader(membersList);
+            Response.AddFiltrationHeader(membersList);
 
-            return membersList;
+            return membersList.Result;
         }
 
         [HttpGet("test-filter")]
-        public async Task<ActionResult<PagedList<MemberDto, TestHeader>>> GetTestFilter([FromQuery] TestParams paginationParams)
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetTestFilter([FromQuery] TestParams filtrationParams)
         {
-            var membersList = await _unitOfWork.MemberRepository.GetMembersTestFilterAsync(paginationParams);
+            var membersList = await _unitOfWork.MemberRepository.GetMembersTestFilterAsync(filtrationParams);
 
-            Response.AddPaginationHeader(membersList);
+            Response.AddFiltrationHeader(membersList);
 
-            return membersList;
+            return membersList.Result;
         }
 
         [HttpGet("{id:int}")]

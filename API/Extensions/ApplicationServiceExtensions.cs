@@ -1,6 +1,7 @@
 using API.Data;
 using API.Helpers;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

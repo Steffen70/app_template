@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
-using API.Helpers.Pagination;
-using API.Helpers.Pagination.Custom;
+using API.Helpers.Filtration;
+using API.Helpers.Filtration.Custom;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
@@ -34,22 +34,22 @@ namespace API.Data
             return _mapper.Map<MemberDto>(user);
         }
 
-        public async Task<PagedList<MemberDto, PaginationHeader>> GetMembersAsync(PaginationParams paginationParams)
+        public async Task<FilteredList<MemberDto>> GetMembersAsync(FiltrationParams filtrationParams)
         {
             var userAdminDtos = _context.Users
                 .OrderBy(u => u.LastActive)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider);
 
-            return await PagedList<MemberDto, PaginationHeader>.CreateAsync(userAdminDtos, paginationParams, _mapper);
+            return await FilteredList<MemberDto>.CreateAsync(userAdminDtos, filtrationParams, _mapper);
         }
 
-        public async Task<PagedList<MemberDto, TestHeader>> GetMembersTestFilterAsync(TestParams testParams)
+        public async Task<FilteredList<MemberDto, TestHeader>> GetMembersTestFilterAsync(TestParams testParams)
         {
             var userAdminDtos = _context.Users
                 .OrderBy(u => u.LastActive)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider);
 
-            return await PagedList<MemberDto, TestHeader>.CreateAsync<TestParams, TestHeader>(userAdminDtos, testParams, _mapper);
+            return await FilteredList<MemberDto, TestHeader>.CreateAsync(userAdminDtos, testParams, _mapper);
         }
     }
 }

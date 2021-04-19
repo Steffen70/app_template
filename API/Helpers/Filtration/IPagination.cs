@@ -1,4 +1,4 @@
-namespace API.Helpers.Pagination
+namespace API.Helpers.Filtration
 {
     public interface IPagination
     {

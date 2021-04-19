@@ -1,6 +1,6 @@
-namespace API.Helpers.Pagination
+namespace API.Helpers.Filtration
 {
-    public class PaginationHeader : IPagination
+    public class FiltrationHeader : IPagination
     {
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
