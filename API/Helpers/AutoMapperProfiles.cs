@@ -18,6 +18,7 @@ namespace API.Helpers
             CreateMap<AppUser, MemberDto>();
 
             CreateMap<FiltrationParams, FiltrationHeader>();
+            CreateMap(typeof(FilteredList<,>), typeof(FilteredList<>));
 
             CreateMap<TestParams, TestHeader>();
         }

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b88010b7-89b4-4092-afd0-bc5c05189683",
+		"_postman_id": "5ba6e8c7-6d5b-4850-a68b-9fe9b986ea17",
 		"name": "App_Template",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -116,7 +116,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://localhost:5001/api/members",
+							"raw": "https://localhost:5001/api/members?pageSize=3",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -125,6 +125,12 @@
 							"path": [
 								"api",
 								"members"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "3"
+								}
 							]
 						}
 					},

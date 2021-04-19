@@ -14,23 +14,11 @@ namespace API.Helpers.Filtration
     {
         public static async Task<FilteredList<TList>> CreateAsync(
             IQueryable<TList> source, FiltrationParams Params, IMapper mapper)
-            => await DownCast(await CreateAsync<FiltrationParams>(source, Params, mapper));
+            => mapper.Map<FilteredList<TList>>(await CreateAsync<FiltrationParams>(source, Params, mapper));
 
         public static async Task<FilteredList<TList>> CreateAndMapInMemoryAsync<TEntity>(
             IQueryable<TEntity> source, FiltrationParams Params, IMapper mapper)
-            => await DownCast(await CreateAndMapInMemoryAsync<FiltrationParams, TEntity>(source, Params, mapper));
-
-        protected static async Task<FilteredList<TList>> DownCast<THeader>(FilteredList<TList, THeader> source)
-            where THeader : FiltrationHeader
-        {
-            using var stream = new MemoryStream();
-
-            await JsonSerializer.SerializeAsync(stream, source);
-
-            stream.Position = 0;
-
-            return await JsonSerializer.DeserializeAsync<FilteredList<TList>>(stream);
-        }
+            => mapper.Map<FilteredList<TList>>(await CreateAndMapInMemoryAsync<FiltrationParams, TEntity>(source, Params, mapper));
     }
 
     public class FilteredList<TList, THeader> where THeader : FiltrationHeader
