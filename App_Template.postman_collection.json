@@ -429,10 +429,10 @@
 			]
 		},
 		{
-			"name": "Weather",
+			"name": "WeatherForecast",
 			"item": [
 				{
-					"name": "Moderator only GetForecast() as Test",
+					"name": "Moderator only get as Test",
 					"event": [
 						{
 							"listen": "test",
@@ -454,7 +454,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://localhost:5001/api/Weather/Forecast/",
+							"raw": "https://localhost:5001/api/WeatherForecast/",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -462,56 +462,8 @@
 							"port": "5001",
 							"path": [
 								"api",
-								"Weather",
-								"Forecast",
+								"WeatherForecast",
 								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{test_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "https://localhost:5001/api/Weather?pageSize=5&currentPage=2",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"port": "5001",
-							"path": [
-								"api",
-								"Weather"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "5"
-								},
-								{
-									"key": "currentPage",
-									"value": "2"
-								}
 							]
 						}
 					},
