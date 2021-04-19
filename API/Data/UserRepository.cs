@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using API.Entities;
-using API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using API.Helpers.Pagination;
@@ -10,7 +9,7 @@ using System.Linq;
 
 namespace API.Data
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
@@ -51,13 +50,13 @@ namespace API.Data
                 .SingleOrDefaultAsync(x => x.Username == username.ToLower());
         }
 
-        public async Task<PagedList<UserAdminDto>> GetUsersAsync(PaginationParams paginationParams)
+        public async Task<PagedList<UserAdminDto, PaginationHeader>> GetUsersAsync(PaginationParams paginationParams)
         {
             var userAdminDtos = _context.Users
                 .OrderBy(u => u.LastActive)
                 .ProjectTo<UserAdminDto>(_mapper.ConfigurationProvider);
 
-            return await PagedList<UserAdminDto>.CreateAsync(userAdminDtos, paginationParams, _mapper);
+            return await PagedList<UserAdminDto, PaginationHeader>.CreateAsync(userAdminDtos, paginationParams, _mapper);
         }
 
         public async Task<bool> AnyUsersAsync()

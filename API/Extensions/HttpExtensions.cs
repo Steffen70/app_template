@@ -6,7 +6,8 @@ namespace API.Extensions
 {
     public static class HttpExtensions
     {
-        public static PagedList<TList> AddPaginationHeader<TList>(this HttpResponse response, PagedList<TList> pagedList)
+        public static PagedList<TList, THeader> AddPaginationHeader<TList, THeader>(this HttpResponse response, PagedList<TList, THeader> pagedList)
+            where THeader : PaginationHeader
         {
             var options = new JsonSerializerOptions
             {

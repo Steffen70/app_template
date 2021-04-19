@@ -13,9 +13,9 @@ namespace API.Extensions
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IOptions<ApiSettings> apiSettings)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(oprions =>
+                .AddJwtBearer(options =>
                 {
-                    oprions.TokenValidationParameters = new TokenValidationParameters
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(
@@ -24,7 +24,7 @@ namespace API.Extensions
                         ValidateAudience = false
                     };
 
-                    oprions.Events = new JwtBearerEvents
+                    options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
                         {

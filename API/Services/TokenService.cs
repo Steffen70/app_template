@@ -4,18 +4,18 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using API.Entities;
-using API.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using API.Helpers;
 using Microsoft.Extensions.Options;
+using API.Data;
 
 namespace API.Services
 {
-    public class TokenService : ITokenService
+    public class TokenService
     {
         private readonly SymmetricSecurityKey _key;
-        private readonly IUnitOfWork _unitOfWork;
-        public TokenService(IOptions<ApiSettings> apiSettings, IUnitOfWork unitOfWork)
+        private readonly UnitOfWork _unitOfWork;
+        public TokenService(IOptions<ApiSettings> apiSettings, UnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             var tokenKey = apiSettings.Value.TokenKey;

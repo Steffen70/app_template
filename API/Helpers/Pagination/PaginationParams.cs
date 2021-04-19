@@ -1,6 +1,6 @@
 namespace API.Helpers.Pagination
 {
-    public class PaginationParams
+    public class PaginationParams : IPagination
     {
         private const int MaxPageSize = 50;
         private int _pageSize = 10;

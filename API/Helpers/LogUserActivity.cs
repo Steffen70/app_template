@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using API.Data;
 using API.Extensions;
-using API.Interfaces;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +15,7 @@ namespace API.Helpers
 
             if (!resultContext.HttpContext.User.Identity.IsAuthenticated) return;
 
-            var unitOfWork = resultContext.HttpContext.RequestServices.GetService<IUnitOfWork>();
+            var unitOfWork = resultContext.HttpContext.RequestServices.GetService<UnitOfWork>();
             var user = await unitOfWork.UserRepository.GetUserByIdAsync(resultContext.HttpContext.User.GetUserId());
 
             user.LastActive = DateTime.UtcNow;

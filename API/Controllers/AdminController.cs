@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
+using API.Data;
 using API.DTOs;
 using API.Extensions;
 using API.Helpers.Pagination;
-using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +11,9 @@ namespace API.Controllers
 {
     public class AdminController : BaseApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public AdminController(IUnitOfWork unitOfWork, IMapper mapper)
+        public AdminController(UnitOfWork unitOfWork, IMapper mapper)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -21,11 +21,11 @@ namespace API.Controllers
 
         [Authorize(Policy = "RequireAdminRole")]
         [HttpGet("users-with-role")]
-        public async Task<ActionResult<PagedList<UserAdminDto>>> GetUsers([FromQuery] PaginationParams paginationParams)
+        public async Task<ActionResult<PagedList<UserAdminDto, PaginationHeader>>> GetUsers([FromQuery] PaginationParams paginationParams)
         {
             var users = await _unitOfWork.UserRepository.GetUsersAsync(paginationParams);
 
-            Response.AddPaginationHeader(users);
+            Response.AddPaginationHeader(users);   
 
             return users;
         }

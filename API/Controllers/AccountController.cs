@@ -2,9 +2,10 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using API.Data;
 using API.DTOs;
 using API.Entities;
-using API.Interfaces;
+using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,10 @@ namespace API.Controllers
     [AllowAnonymous]
     public class AccountController : BaseApiController
     {
-        private readonly ITokenService _tokenService;
+        private readonly TokenService _tokenService;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        public AccountController(IUnitOfWork unitOfWork, ITokenService tokenService, IMapper mapper)
+        private readonly UnitOfWork _unitOfWork;
+        public AccountController(UnitOfWork unitOfWork, TokenService tokenService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
