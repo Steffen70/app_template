@@ -1,21 +1,37 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using API.Data.Repositories;
+using AutoMapper;
 
 namespace API.Data
 {
     public class UnitOfWork
     {
-        private readonly DataContext _context;
-        private readonly IMapper _mapper;
+        internal readonly DataContext _context;
+        internal readonly IMapper _mapper;
         public UnitOfWork(DataContext context, IMapper mapper)
         {
             _mapper = mapper;
             _context = context;
         }
 
-        public UserRepository UserRepository => new UserRepository(_context, _mapper);
-        public MemberRepository MemberRepository => new MemberRepository(_context, this, _mapper);
+        private Dictionary<Type, BaseRepository> _repositories = new Dictionary<Type, BaseRepository>();
+        public TRepo GetRepo<TRepo>() where TRepo : BaseRepository, new()
+        {
+            var repoType = typeof(TRepo);
+
+            if (!_repositories.ContainsKey(repoType))
+                _repositories.Add(typeof(TRepo), BaseRepository.CreateRepo<TRepo>(_context, this, _mapper));
+
+            var repo = _repositories[repoType] as TRepo;
+
+            if (repo is null)
+                throw new Exception($"Failed to instantiate repository: \"{typeof(TRepo)}\"");
+
+            return repo;
+        }
 
         public async Task<bool> Complete()
         => await _context.SaveChangesAsync() > 0;

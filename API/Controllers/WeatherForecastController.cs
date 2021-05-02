@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using API.Data;
 using API.DTOs;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +11,8 @@ namespace API.Controllers
 {
     public class WeatherForecastController : BaseApiController
     {
+        public WeatherForecastController(UnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
+
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"

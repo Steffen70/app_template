@@ -1,24 +1,15 @@
-using System.Threading.Tasks;
-using API.Entities;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using API.DTOs;
-using AutoMapper.QueryableExtensions;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using API.DTOs;
+using API.Entities;
 using API.Helpers.Filtration;
+using AutoMapper.QueryableExtensions;
 
-namespace API.Data
+namespace API.Data.Repositories
 {
-    public class UserRepository
+    public class UserRepository : BaseRepository
     {
-        private readonly DataContext _context;
-        private readonly IMapper _mapper;
-        public UserRepository(DataContext context, IMapper mapper)
-        {
-            _mapper = mapper;
-            _context = context;
-        }
-
         public async Task<bool> UserExistsAsync(string username)
         {
             return await _context.Users.AnyAsync(u => u.Username == username.ToLower());
@@ -53,6 +44,7 @@ namespace API.Data
         public async Task<FilteredList<UserAdminDto>> GetUsersAsync(FiltrationParams filtrationParams)
         {
             var userAdminDtos = _context.Users
+                .Where(u => u.Created <= filtrationParams._timeStamp)
                 .OrderBy(u => u.LastActive)
                 .ProjectTo<UserAdminDto>(_mapper.ConfigurationProvider);
 

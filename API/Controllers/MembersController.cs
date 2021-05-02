@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Data;
+using API.Data.Repositories;
 using API.DTOs;
 using API.Extensions;
 using API.Helpers.Filtration;
@@ -12,18 +13,16 @@ namespace API.Controllers
 {
     public class MembersController : BaseApiController
     {
-        private readonly UnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        public MembersController(UnitOfWork unitOfWork, IMapper mapper)
+        private readonly MemberRepository _memberRepository;
+        public MembersController(UnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
+            _memberRepository = unitOfWork.GetRepo<MemberRepository>();
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetMembers([FromQuery] FiltrationParams filtrationParams)
         {
-            var membersList = await _unitOfWork.MemberRepository.GetMembersAsync(filtrationParams);
+            var membersList = await _memberRepository.GetMembersAsync(filtrationParams);
 
             Response.AddFiltrationHeader(membersList);
 
@@ -33,7 +32,7 @@ namespace API.Controllers
         [HttpGet("test-filter")]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetTestFilter([FromQuery] TestParams filtrationParams)
         {
-            var membersList = await _unitOfWork.MemberRepository.GetMembersTestFilterAsync(filtrationParams);
+            var membersList = await _memberRepository.GetMembersTestFilterAsync(filtrationParams);
 
             Response.AddFiltrationHeader(membersList);
 
@@ -42,10 +41,10 @@ namespace API.Controllers
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<MemberDto>> GetMemberById([FromRoute] int id)
-        => await _unitOfWork.MemberRepository.GetMemberByIdAsync(id);
+        => await _memberRepository.GetMemberByIdAsync(id);
 
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetMemberByUsername([FromRoute] string username)
-        => await _unitOfWork.MemberRepository.GetMemberByUsernameAsync(username);
+        => await _memberRepository.GetMemberByUsernameAsync(username);
     }
 }

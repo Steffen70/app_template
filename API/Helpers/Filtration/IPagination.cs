@@ -4,5 +4,7 @@ namespace API.Helpers.Filtration
     {
         int CurrentPage { get; set; }
         int PageSize { get; set; }
+
+        long TimeStampTicks { get; set; }
     }
 }

@@ -12,11 +12,13 @@ using Microsoft.Extensions.Options;
 using API.Helpers;
 using API.DTOs;
 using API.Data;
+using API.Data.Repositories;
 
 namespace API.Services
 {
     public class SeedService
     {
+        private readonly UserRepository _userRepository;
         private readonly UnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
         private readonly IOptions<ApiSettings> _apiSettings;
@@ -25,6 +27,8 @@ namespace API.Services
             _apiSettings = apiSettings;
             _env = env;
             _unitOfWork = unitOfWork;
+
+            _userRepository = unitOfWork.GetRepo<UserRepository>();
         }
 
         public async Task SeedData()
@@ -46,7 +50,7 @@ namespace API.Services
         {
             await _unitOfWork.MigrateAsync();
 
-            if (await _unitOfWork.UserRepository.AnyUsersAsync()) return false;
+            if (await _userRepository.AnyUsersAsync()) return false;
 
             using var hmac = new HMACSHA512();
             var admin = new AppUser
@@ -58,7 +62,7 @@ namespace API.Services
                 UserRole = "Admin"
             };
 
-            _unitOfWork.UserRepository.AddUser(admin);
+            _userRepository.AddUser(admin);
 
             return true;
         }
@@ -74,7 +78,7 @@ namespace API.Services
             foreach (var r in registerDtos)
             {
                 using var hmac = new HMACSHA512();
-                _unitOfWork.UserRepository.AddUser(new AppUser
+                _userRepository.AddUser(new AppUser
                 {
                     Username = r.Username.ToLower(),
                     PasswordHash = hmac.ComputeHash(string.IsNullOrWhiteSpace(r.Password)

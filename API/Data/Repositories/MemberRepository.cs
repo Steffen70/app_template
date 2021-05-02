@@ -3,33 +3,25 @@ using System.Threading.Tasks;
 using API.DTOs;
 using API.Helpers.Filtration;
 using API.Helpers.Filtration.Custom;
-using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
-namespace API.Data
+namespace API.Data.Repositories
 {
-    public class MemberRepository
+    public class MemberRepository : BaseRepository
     {
-        private readonly DataContext _context;
-        private readonly UnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        public MemberRepository(DataContext context, UnitOfWork unitOfWork, IMapper mapper)
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-            _context = context;
-        }
+        private UserRepository _userRepository;
+        private UserRepository UserRepository => _userRepository ?? (_userRepository = _unitOfWork.GetRepo<UserRepository>());
 
         public async Task<MemberDto> GetMemberByIdAsync(int id)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByIdAsync(id);
+            var user = await UserRepository.GetUserByIdAsync(id);
 
             return _mapper.Map<MemberDto>(user);
         }
 
         public async Task<MemberDto> GetMemberByUsernameAsync(string username)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
+            var user = await UserRepository.GetUserByUsernameAsync(username);
 
             return _mapper.Map<MemberDto>(user);
         }
