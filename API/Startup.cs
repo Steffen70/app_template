@@ -45,12 +45,12 @@ namespace API
 
             app.UseRouting();
 
-            if (_env.IsDevelopment())
-                app.UseCors(policy => policy
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials()
-                    .WithOrigins("https://localhost:4200"));
+            // if (_env.IsDevelopment())
+            //     app.UseCors(policy => policy
+            //         .AllowAnyHeader()
+            //         .AllowAnyMethod()
+            //         .AllowCredentials()
+            //         .WithOrigins("https://localhost:4200"));
 
             app.UseAuthentication();
 
@@ -63,7 +63,7 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //endpoints.MapFallbackToController("Index", "Fallback");
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }
