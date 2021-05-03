@@ -20,7 +20,7 @@ export default class Router extends BaseComponent {
         this.createComponentDivAsync = async () => {
             const page = window.location.pathname.split('/')[1]
 
-            const component = this.routes.find(r => r.path === page)?.component
+            let component = this.routes.find(r => r.path === page)?.component
 
             if (!component)
                 component = new NotFound()

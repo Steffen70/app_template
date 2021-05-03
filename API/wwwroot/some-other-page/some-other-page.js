@@ -5,8 +5,4 @@ export default class SomeOtherPage extends BaseComponent{
     components = [
         new SayCiao()
     ]
-
-    constructor(){
-        super()
-    }
 }
