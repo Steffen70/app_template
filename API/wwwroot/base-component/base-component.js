@@ -17,10 +17,11 @@ export default class BaseComponent {
             return div
         }
 
-        this.generateStylesheetLink = () => {
+        this.generateStylesheetLink = async () => {
             const url = `./${this.name}/${this.name}.css`
+            const response = await fetch(url, { method: 'HEAD' })
 
-            if (!urlExists(url))
+            if (response.status !== 200)
                 return undefined
 
             const link = document.createElement('link')
@@ -44,7 +45,7 @@ export default class BaseComponent {
             }
 
             if (!this.stylesheetLink)
-                this.stylesheetLink = this.generateStylesheetLink()
+                this.stylesheetLink = await this.generateStylesheetLink()
 
             if (this.components.length >= 1) {
                 let asyncFunctions = this.components
@@ -66,12 +67,4 @@ export default class BaseComponent {
 
 export function pascalToKebabCase(str) {
     return str[0].toLowerCase() + str.slice(1, str.length).replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
-}
-
-export function urlExists(url) {
-    var http = new XMLHttpRequest()
-    http.open('HEAD', url, false)
-    http.send()
-
-    return http.status != 404
 }
