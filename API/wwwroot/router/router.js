@@ -6,7 +6,7 @@ import SomeOtherPage from '../some-other-page/some-other-page.js'
 export default class Router extends BaseComponent {
     routes = [
         {
-            path: 'home-page',
+            path: '',
             component: new HomePage()
         },
         {
