@@ -6,33 +6,34 @@ export default class Navigation extends BaseComponent {
     eventListenersAdded = false
     constructor() {
         super()
-    }
 
-    async initAsync() {
-        await super.initAsync()
-
-        if (this.eventListenersAdded)
-            return
-
-        this.navLinks = this.node.querySelectorAll('.nav-link')
-
-        this.navLinks.forEach(n => n.addEventListener('click', e => this.changeRoute(e.target.getAttribute('data-page'))))
-
-        window.addEventListener('popstate', () => {
+        this.changeRoute = page => {
+            if (this.onPageChangeLocked)
+                return
             this.onPageChangeLocked = true
 
+            window.history.pushState({}, page, `${window.location.origin}${page}`)
             document.dispatchEvent(this.onPageChange)
-        })
+        }
 
-        this.eventListenersAdded = true
-    }
+        this.super_intiAsync = this.initAsync
+        this.initAsync = async () => {
+            await this.super_intiAsync()
 
-    changeRoute(page) {
-        if (this.onPageChangeLocked)
-            return
-        this.onPageChangeLocked = true
+            if (this.eventListenersAdded)
+                return
 
-        window.history.pushState({}, page, `${window.location.origin}${page}`)
-        document.dispatchEvent(this.onPageChange)
+            this.navLinks = this.node.querySelectorAll('.nav-link')
+
+            this.navLinks.forEach(n => n.addEventListener('click', e => this.changeRoute(e.target.getAttribute('data-page'))))
+
+            window.addEventListener('popstate', () => {
+                this.onPageChangeLocked = true
+
+                document.dispatchEvent(this.onPageChange)
+            })
+
+            this.eventListenersAdded = true
+        }
     }
 }

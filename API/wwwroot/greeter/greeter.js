@@ -8,15 +8,16 @@ export default class Greeter extends BaseComponent {
     constructor(username) {
         super()
         this.user = new User(username)
-    }
 
-    async initAsync() {
-        await super.initAsync()
+        this.super_intiAsync = this.initAsync
+        this.initAsync = async () => {
+            await this.super_intiAsync()
 
-        this.greeterNode = this.node.querySelector('.greeter')
-        this.responseNode = this.node.querySelector('.response')
+            this.greeterNode = this.node.querySelector('.greeter')
+            this.responseNode = this.node.querySelector('.response')
 
-        this.greeterNode.textContent = this.user.sayHello()
-        this.responseNode.textContent = sayHelloBack(this.user)
+            this.greeterNode.textContent = this.user.sayHello()
+            this.responseNode.textContent = sayHelloBack(this.user)
+        }
     }
 }

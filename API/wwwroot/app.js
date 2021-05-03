@@ -14,34 +14,32 @@ class App extends BaseComponent {
     constructor() {
         super()
 
-        document.addEventListener('onPageChange', () => this.onPageChange())
-    }
+        this.onPageChange = () => {
+            let routerNode = this.node.querySelector('.router')
 
-    onPageChange() {
-        let routerNode = this.node.querySelector('.router')
+            if (!routerNode)
+                return
 
-        if (!routerNode)
-            return
+            let currentPage = this.router.routes.find(r => r.component.name == routerNode.getAttribute('data-current-page'))?.path
+            if (currentPage == window.location.pathname.split('/')[1]) {
+                this.navigation.onPageChangeLocked = false
+                return
+            }
 
-        let currentPage = this.router.routes.find(r => r.component.name == routerNode.getAttribute('data-current-page'))?.path
-        console.log(currentPage, window.location.pathname.split('/')[1], currentPage == window.location.pathname.split('/')[1])
+            routerNode.remove()
+            this.node.append(document.createElement('router'))
 
-        if (currentPage == window.location.pathname.split('/')[1]) {
-            this.navigation.onPageChangeLocked = false
-            return
+            this.node = this.router.node = undefined
+
+            this.initAsync()
+                .then(this.navigation.onPageChangeLocked = false)
         }
 
-        routerNode.remove()
-        this.node.append(document.createElement('router'))
+        document.addEventListener('onPageChange', this.onPageChange)
 
-        this.node = this.router.node = undefined
-
-        this.initAsync()
-            .then(this.navigation.onPageChangeLocked = false)
-    }
-
-    async createComponentDivAsync() {
-        return document.body
+        this.createComponentDivAsync = async () => {
+            return document.body
+        }
     }
 }
 

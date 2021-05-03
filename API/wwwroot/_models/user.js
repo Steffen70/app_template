@@ -1,9 +1,9 @@
 export default class User {
     constructor(name) {
         this.name = name
-    }
 
-    sayHello = () => `Hello, my name is ${this.name}`
+        this.sayHello = () => `Hello, my name is ${this.name}`
+    }
 }
 
 export function sayHelloBack(user) {

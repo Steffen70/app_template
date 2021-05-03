@@ -16,25 +16,25 @@ export default class Router extends BaseComponent {
     ]
     constructor() {
         super()
-    }
 
-    async createComponentDivAsync() {
-        const page = window.location.pathname.split('/')[1]
+        this.createComponentDivAsync = async () => {
+            const page = window.location.pathname.split('/')[1]
 
-        const component = this.routes.find(r => r.path === page)?.component
+            const component = this.routes.find(r => r.path === page)?.component
 
-        if (!component)
-            component = new NotFound()
+            if (!component)
+                component = new NotFound()
 
-        this.components = [component]
+            this.components = [component]
 
-        const div = document.createElement('div')
-        div.classList.add(this.name)
+            const div = document.createElement('div')
+            div.classList.add(this.name)
 
-        div.setAttribute('data-current-page', component.name)
+            div.setAttribute('data-current-page', component.name)
 
-        div.append(document.createElement(component.name))
+            div.append(document.createElement(component.name))
 
-        return div
+            return div
+        }
     }
 }
