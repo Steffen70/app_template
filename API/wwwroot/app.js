@@ -27,6 +27,8 @@ class App extends BaseComponent {
             }
 
             routerNode.remove()
+            document.head.querySelectorAll(`link[data-component]`)?.forEach(l => l.remove())
+
             this.node.append(document.createElement('router'))
 
             this.node = this.router.node = undefined

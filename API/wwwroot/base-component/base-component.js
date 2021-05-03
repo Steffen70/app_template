@@ -17,32 +17,61 @@ export default class BaseComponent {
             return div
         }
 
+        this.generateStylesheetLink = () => {
+            const url = `./${this.name}/${this.name}.css`
+
+            if (!urlExists(url))
+                return undefined
+
+            const link = document.createElement('link')
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = url
+
+            link.setAttribute('data-component', this.name)
+
+            return link
+        }
+
         this.initAsync = async () => {
-            if (this.node)
-                return
+            if (!this.node) {
+                const result = this.createComponentDivAsync()
 
-            const result = this.createComponentDivAsync()
+                if (result instanceof Promise)
+                    this.node = await result
+                else
+                    this.node = result
+            }
 
-            if (result instanceof Promise)
-                this.node = await result
-            else
-                this.node = result
+            if (!this.stylesheetLink)
+                this.stylesheetLink = this.generateStylesheetLink()
 
-            if (this.components.length < 1)
-                return
+            if (this.components.length >= 1) {
+                let asyncFunctions = this.components
+                    .map(c => c.initAsync())
+
+                await Promise.all(asyncFunctions)
+            }
 
             const componentLoader = new ComponentLoader(this.node, this.components)
 
-            let asyncFunctions = this.components
-                .map(c => c.initAsync())
+            componentLoader.addStylesheets()
 
-            await Promise.all(asyncFunctions)
-
-            componentLoader.addComponents()
+            if (this.components.length >= 1) {
+                componentLoader.addComponents()
+            }
         }
     }
 }
 
 export function pascalToKebabCase(str) {
     return str[0].toLowerCase() + str.slice(1, str.length).replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
+}
+
+export function urlExists(url) {
+    var http = new XMLHttpRequest()
+    http.open('HEAD', url, false)
+    http.send()
+
+    return http.status != 404
 }
