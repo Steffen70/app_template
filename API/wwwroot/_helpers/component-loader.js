@@ -15,6 +15,8 @@ export default class ComponentLoader {
                 .forEach(c => document.head.append(c.stylesheetLink))
         }
 
+        this.loadComponentData = () => this.components.forEach(c => c.loadData?.())
+
         this.addComponents = () => {
             const compPlaceholders = this.sectionNode.querySelectorAll(this.compSelector.join(', '))
 

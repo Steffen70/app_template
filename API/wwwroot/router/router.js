@@ -1,17 +1,17 @@
 import BaseComponent from '../base-component/base-component.js'
-import HomePage from '../home-page/home-page.js'
+import LandingPage from '../landing-page/landing-page.js'
 import NotFound from '../not-found/not-found.js'
-import SomeOtherPage from '../some-other-page/some-other-page.js'
+import TestPage from '../test-page/test-page.js'
 
 export default class Router extends BaseComponent {
     routes = [
         {
             path: '',
-            component: new HomePage()
+            component: new LandingPage()
         },
         {
-            path: 'some-other-page',
-            component: new SomeOtherPage()
+            path: 'test',
+            component: new TestPage()
         }
     ]
     constructor() {

@@ -61,6 +61,8 @@ export default class BaseComponent {
             if (this.components.length >= 1) {
                 componentLoader.addComponents()
             }
+
+            componentLoader.loadComponentData()
         }
     }
 }

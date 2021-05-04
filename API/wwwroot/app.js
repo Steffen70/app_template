@@ -22,7 +22,7 @@ class App extends BaseComponent {
 
             let currentPage = this.router.routes.find(r => r.component.name == routerNode.getAttribute('data-current-page'))?.path
             if (currentPage == window.location.pathname.split('/')[1]) {
-                this.navigation.onPageChangeLocked = false
+                Navigation.onPageChangeLocked = false
                 return
             }
 
@@ -34,7 +34,7 @@ class App extends BaseComponent {
             this.node = this.router.node = undefined
 
             this.initAsync()
-                .then(this.navigation.onPageChangeLocked = false)
+                .then(Navigation.onPageChangeLocked = false)
         }
 
         document.addEventListener('onPageChange', this.onPageChange)
