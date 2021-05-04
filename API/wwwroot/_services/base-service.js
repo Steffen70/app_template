@@ -4,12 +4,12 @@ export default class BaseService {
     static async getInstanceAsync() {
         const className = this.prototype.constructor.name
 
-        if (!this._instance) {
-            console.log('create instance of', className)
-            const module = await import(`./${pascalToKebabCase(className)}.js`)
-            this._instance = eval(`new module.default()`)
-        }
+        if (!this._instancePromise)
+            this._instancePromise = new Promise(async resolve => {
+                const module = await import(`./${pascalToKebabCase(className)}.js`)
+                resolve(eval(`new module.default()`))
+            })
 
-        return this._instance
+        return await this._instancePromise
     }
 }
