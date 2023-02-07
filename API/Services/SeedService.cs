@@ -74,7 +74,7 @@ namespace API.Services
 
             if (registerDtos == null) return;
 
-            var demoPassword = Encoding.UTF8.GetBytes(_apiSettings.Value.DemoPassword);
+            var defaultPassword = Encoding.UTF8.GetBytes(_apiSettings.Value.DefaultPassword);
             foreach (var r in registerDtos)
             {
                 using var hmac = new HMACSHA512();
@@ -82,7 +82,7 @@ namespace API.Services
                 {
                     Username = r.Username.ToLower(),
                     PasswordHash = hmac.ComputeHash(string.IsNullOrWhiteSpace(r.Password)
-                        ? demoPassword
+                        ? defaultPassword
                         : Encoding.UTF8.GetBytes(r.Password)),
                     PasswordSalt = hmac.Key
                 });

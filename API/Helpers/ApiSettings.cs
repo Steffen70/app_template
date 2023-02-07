@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting;
+
 namespace API.Helpers
 {
     public class ApiSettings
@@ -5,6 +7,6 @@ namespace API.Helpers
         public string ConnectionString { get; set; }
         public string TokenKey { get; set; }
         public string AdminPassword { get; set; }
-        public string DemoPassword { get; set; }
+        public string DefaultPassword { get; set; }
     }
 }

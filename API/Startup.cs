@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using API.Extensions;
 using API.Helpers;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API
 {
@@ -30,10 +31,13 @@ namespace API
             services.AddIdentityServices(apiSettings);
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-            });
+
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +67,7 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //endpoints.MapFallbackToController("Index", "Fallback");
+                endpoints.MapFallbackToController("Index", "Catchall");
             });
         }
     }

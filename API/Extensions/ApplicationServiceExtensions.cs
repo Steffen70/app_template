@@ -40,7 +40,7 @@ namespace API.Extensions
 
             var settings = apiSettings;
             services.AddDbContext<DataContext>(options =>
-                options.UseSqlite(settings.Value.ConnectionString));
+                options.UseSqlServer(settings.Value.ConnectionString));
 
             return services;
         }
